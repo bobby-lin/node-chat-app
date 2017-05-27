@@ -27,10 +27,11 @@ io.on('connection', (socket) => {
   // broadcast (send to every connection excluding the current connection)
   socket.broadcast.emit('newMessage', generateMessage('Admin', NewUserMsg));
 
-  socket.on('createMessage', function(message) {
+  socket.on('createMessage', function(message, callback) {
     console.log('Server received message', message);
     // Send the message to other connected users
     io.emit('newMessage', generateMessage(message.from, message.text));
+    callback('This is from server');
   })
 
   socket.on('disconnect', () => {
