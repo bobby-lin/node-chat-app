@@ -13,17 +13,20 @@ var io = socketIO(server);
 
 app.use(express.static(publicPath));
 
+// Note: io.emit send message to all connection
+// socket.emit send message to one connection
+
 io.on('connection', (socket) => {
   console.log('New user connected');
 
-  socket.emit('newMessage', {
-    from: 'socrates@gmail.com',
-    text: 'Hello. How are you?',
-    createdAt: 1234
-  });
-
   socket.on('createMessage', function(message) {
     console.log('Server received message', message);
+    // Send the message to other connected users
+    io.emit('newMessage', {
+      from: message.from,
+      text: message.text,
+      createdAt: new Date().getTime()
+    });
   })
 
   socket.on('disconnect', () => {
