@@ -2,7 +2,6 @@ var socket = io();
 // name of events must be correct {connect, disconnect}
 socket.on('connect', function () {
   console.log('Connected to server');
-  
 });
 
 socket.on('disconnect', function () {
