@@ -1,4 +1,5 @@
 // https://www.npmjs.com/package/socket.io
+// https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/Using_geolocation
 
 const path = require('path');
 const http = require('http');
@@ -30,9 +31,15 @@ io.on('connection', (socket) => {
   socket.on('createMessage', function(message, callback) {
     console.log('Server received message', message);
     // Send the message to other connected users
+    // Acknowledge that the message is received
     io.emit('newMessage', generateMessage(message.from, message.text));
     callback('This is from server');
-  })
+  });
+
+  socket.on('createLocationMessage', function (coords) {
+    var coords_string = `${coords.latitude}, ${coords.longitude}`;
+    io.emit('newMessage', generateMessage('Admin', coords_string));
+  });
 
   socket.on('disconnect', () => {
     console.log('User disconnected');
