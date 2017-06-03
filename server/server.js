@@ -33,7 +33,7 @@ io.on('connection', (socket) => {
     // Send the message to other connected users
     // Acknowledge that the message is received
     io.emit('newMessage', generateMessage(message.from, message.text));
-    callback('This is from server');
+    callback();
   });
 
   socket.on('createLocationMessage', function (coords) {
