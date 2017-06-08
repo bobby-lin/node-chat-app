@@ -1,12 +1,4 @@
 var socket = io();
-// name of events must be correct {connect, disconnect}
-socket.on('connect', function () {
-  console.log('Connected to server');
-});
-
-socket.on('disconnect', function () {
-  console.log('Disconnected from server');
-})
 
 function scrollToBottom () {
   // Selectors
@@ -25,6 +17,24 @@ function scrollToBottom () {
     messages.scrollTop(scrollHeight);
   }
 };
+
+// name of events must be correct {connect, disconnect}
+socket.on('connect', function () {
+  var params = jQuery.deparam(window.location.search);
+
+  socket.emit('join', params, function (err) {
+    if (err) {
+      alert(err);
+      window.location.href ='/';
+    } else {
+      console.log('No error');
+    }
+  });
+});
+
+socket.on('disconnect', function () {
+  console.log('Disconnected from server');
+})
 
 socket.on('newMessage', function (message) {
   var template = jQuery("#message-template").html();
